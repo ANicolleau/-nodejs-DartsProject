@@ -15,3 +15,8 @@ TP - Dart Master
 tips : console.table()
 
 je veux ajouter mes gagnants dans un dictionnaire avec la clé qui correspond à la place remporté
+
+la partie ne se termine que si le nombre de joueur encore en jeu est == 1
+en gros si joueur win --> joueur à un bool true sur isw_in et son rank est modifié.
+on continue tant que le nombre de joueur != nombredewinner +1
+class abstraite

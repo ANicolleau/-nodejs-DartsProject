@@ -45,9 +45,7 @@ async function CreatePlayers(counter) {
             console.log(`Bienvenue ${answer.name_of_player} !`)
             player_name = answer.name_of_player
         })
-    const players = new player(player_name)
-    console.log(players)
-    return players
+    return new player(player_name)
 }
 
 
@@ -71,13 +69,14 @@ async function GameSelection() {
 
 async function playingThreeHundredAndOne(players) {
     let win = false
-    let three_hundred_and_one = new ThreeHundreadAndOne()
-    let multiplier = 'Simple'
-    let correct_value = false
+    let three_hundred_and_one = new ThreeHundreadAndOne(1, "Tour du monde", 1, "Started")
     for (let player of players) {
         player.arrow = player.gameArrow("301")
         for (player.arrow; player.arrow !== 0; player.arrow--) {
-            correct_value = false
+            const is_win_for_this_player = player.getWin()
+            if (is_win_for_this_player)
+                break
+            let correct_value = false
             while (!correct_value) {
                 await inquirer
                     .prompt([
@@ -103,31 +102,25 @@ async function playingThreeHundredAndOne(players) {
                         }
                     ])
                     .then(answer => {
-                        const is_score_possible = three_hundred_and_one.checkImpossible(answer.score)
+                        answer.multiplier = +answer.multiplier
+                        const points = +answer.score
+                        player.score = +player.score
+                        const is_score_possible = three_hundred_and_one.checkImpossible(points)
                         const is_multiplier_possible = three_hundred_and_one.checkMultiplier(answer.multiplier)
-                        const is_middle_multiplier_possible = three_hundred_and_one.checkMiddle(answer.score, answer.multiplier)
-                        if (is_score_possible && is_multiplier_possible && is_middle_multiplier_possible) {
+                        const is_middle_multiplier_possible = three_hundred_and_one.checkMiddle(points, answer.multiplier)
+                        if (is_score_possible && is_multiplier_possible && is_middle_multiplier_possible && !is_win_for_this_player) {
                             correct_value = true
-                            three_hundred_and_one.handle_shot(player, answer.score, answer.multiplier)
+                            three_hundred_and_one.handle_shot(player, points, answer.multiplier)
+                            if (three_hundred_and_one.doWeHaveAWinner(player, answer.multiplier))
+                                console.log(`C'est gagné pour ${player.name}`)
                         }
-                        // if ((answer.score <= 25 && !(answer.score in impossible)) || (answer.score <= 25 && answer.multiplicator != "Triple")) {
-                        //     multiplicator = answer.multiplicator
-                        //     ThreeHundreadAndOne.handle_shot(player, answer.score, answer.multiplicator)
-                        //     continu = true
-                        // }
-                        // else if((answer.score == 25 && answer.multiplicator == "Triple")){
-                        //     console.log(`${answer.score} en Triple impossible. Veuillez saisir un autre nombre ou un autre multiplicateur.`)
-                        // }
-                        // else
-                        //     console.log(`${answer.score} impossible. Veuillez saisir un autre nombre.`)
                     })
             }
-            three_hundred_and_one.DoWeHaveAWinner(player, multiplier)
         }
     }
-    if (three_hundred_and_one.status === "ended") {
+    if ((players.length === three_hundred_and_one.winners.length + 1) || players.length === three_hundred_and_one.winners.length) {
         win = true
-        console.log(ThreeHundreadAndOne.getWinners())
+        console.log(three_hundred_and_one.getWinners())
     }
     if (!win)
         await playingThreeHundredAndOne(players)
@@ -135,29 +128,48 @@ async function playingThreeHundredAndOne(players) {
 
 async function playingWorldTour(players) {
     let win = false
+    let world_tour = new WorldTour(1, "Tour du monde", 1, "Started")
     for (let player of players) {
         player.arrow = player.gameArrow("Tour du monde")
         console.log(`C'est au tour de ${player.name} \n`)
         for (player.arrow; player.arrow !== 0; player.arrow--) {
-            await inquirer
-                .prompt([
-                    {
-                        name: 'score',
-                        message: `Veuillez entrer le score mis par ${player['name']}, il lui reste ${player.arrow} fléchettes. Son score actuel est de ${player.score}: \n`
-                    }
-                ])
-                .then(answer => {
-                    WorldTour.handle_shot(player, answer)
-                })
-            WorldTour.DoWeHaveAWinner(player, players.length)
+            const is_win_for_this_player = player.getWin()
+            if (is_win_for_this_player)
+                break
+            let correct_value = false
+            while (!correct_value) {
+                await inquirer
+                    .prompt([
+                        {
+                            name: 'score',
+                            message: `Veuillez entrer le score mit par ${player['name']}, il lui reste ${player.arrow} fléchettes. Son score actuel est de ${player.score}: \n`
+                        }
+                    ])
+                    .then(answer => {
+                        const score = +answer.score
+                        console.log(score)
+                        const is_score_possible = world_tour.checkImpossible(score)
+                        if (is_score_possible && !is_win_for_this_player) {
+                            correct_value = true
+                            world_tour.handle_shot(player, score)
+                            if (world_tour.doWeHaveAWinner(player, answer.multiplier))
+                                console.log(`C'est gagné pour ${player.name}`)
+                        }
+                    })
+            }
         }
     }
-    if (WorldTour.status === "ended") {
+    if ((players.length === world_tour.winners.length + 1) || players.length === world_tour.winners.length) {
         win = true
-        console.log(WorldTour.getWinners())
+        console.log(world_tour.getWinners())
     }
     if (win !== true)
-        playingWorldTour(players)
+        await playingWorldTour(players)
+}
+
+function shuffle(array) {
+    array = array.sort(() => Math.random() - 0.5);
+    return array
 }
 
 async function Init() {
@@ -166,18 +178,18 @@ async function Init() {
     for (let i = 0; i < number_of_player; i++) {
         tab_of_players.push(await CreatePlayers(i + 1))
     }
+    tab_of_players = shuffle(tab_of_players)
     const gameMod = await GameSelection()
     switch (gameMod) {
         case 'Tour du monde':
-            WorldTour = new WorldTour()
             for (let player of tab_of_players)
                 player.score = player.gameScore("Tour du monde")
-            playingWorldTour(tab_of_players)
+            await playingWorldTour(tab_of_players)
             break
         case '301':
             for (let player of tab_of_players)
                 player.score = player.gameScore("301")
-            playingThreeHundredAndOne(tab_of_players)
+            await playingThreeHundredAndOne(tab_of_players)
             break
         case 'le Cricket':
             break

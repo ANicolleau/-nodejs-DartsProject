@@ -1,21 +1,25 @@
-let gamemode = require('../gamemode')
+let GameMode = require('../gamemode')
 
-class AroundTheWorld extends gamemode {
+class AroundTheWorld extends GameMode {
     constructor() {
         super()
         this.sector_unlocked = false
     }
 
-    async DoWeHaveAWinner(player) {
+    doWeHaveAWinner(player) {
+        let is_win = false
         if (player.score === 2) {
             this.winners.push(player.name)
-            this.status = "ended"
+            player.rank = this.winners.length + 1
+            player.gameWin = true
+            is_win = true
         }
+        return is_win
     }
 
 
-    async handle_shot(player, answer) {
-        if (player.score === answer.score) {
+    handle_shot(player, score) {
+        if (player.score === score) {
             player.score++
             console.log(`Bravo, le score de ${player.name} est maintenant de ${player.score}.\n`)
         } else

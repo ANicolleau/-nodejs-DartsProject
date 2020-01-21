@@ -1,48 +1,35 @@
 let gamemode = require('../gamemode')
 
-class ThreeHundreadAndOne extends gamemode {
-    constructor() {
-        super()
+class ThreeHundredAndOne extends gamemode {
+    constructor(id, mode, currentPlayerId, status) {
+        super(id, mode, currentPlayerId, status)
     }
 
-    DoWeHaveAWinner(player, multiplier) {
-        if (player.score === 0 && multiplier === "Double") {
+    doWeHaveAWinner(player, multiplier) {
+        let is_win = false
+        if (player.score === 0 && multiplier === 2) {
             this.winners.push(player.name)
-            this.status = "ended"
+            player.rank = this.winners.length + 1
+            player.gameWin = true
+            is_win = true
         }
-    }
-
-    checkImpossible(points) {
-        let possible = false
-        console.log("points : " + points)
-        points = +points
-        const impossible_points = [21, 22, 23, 24]
-        if (!impossible_points.includes(points) && (points <= 20 || points === 25)) {
-            possible = true
-        }
-        console.log("checkImpossible possible " + possible)
-        return possible
+        return is_win
     }
 
     checkMultiplier(multiplier) {
-        console.log("multiplier : " + multiplier)
         let possible = false
-        multiplier = +multiplier
         const possible_multiplier = [1, 2, 3]
         if (possible_multiplier.includes(multiplier))
             possible = true
-        console.log("checkMultiplier possible " + possible)
         return possible
     }
 
 
     checkMiddle(points, multiplier) {
         let possible = true
-        points = +points
         multiplier = +multiplier
         if (points === 25 && multiplier === 3)
             possible = false
-        console.log("checkMiddle possible " + possible)
         return possible
     }
 
@@ -52,9 +39,8 @@ class ThreeHundreadAndOne extends gamemode {
         points *= multiplier
         if (player.score >= points)
             player.score -= points
-        return points
     }
 
 }
 
-module.exports = ThreeHundreadAndOne
+module.exports = ThreeHundredAndOne
