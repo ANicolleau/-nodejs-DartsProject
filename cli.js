@@ -101,7 +101,7 @@ async  function playingThreeHundredAndOne(players) {
                             }
                         }
                     ])
-                    .then(answer => {
+                    .then(answer  => {
                         answer.multiplier = +answer.multiplier
                         const points = +answer.score
                         player.score = +player.score
