@@ -4,7 +4,6 @@ class AroundTheWorld extends gamemode {
     constructor() {
         super()
         this.sector_unlocked = false
-        // Voir a utilisé cette variable
     }
 
     async DoWeHaveAWinner(player) {
