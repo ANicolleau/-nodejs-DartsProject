@@ -1,4 +1,5 @@
 let gamemode = require('../gamemode')
+
 class AroundTheWorld extends gamemode {
     constructor() {
         super()
@@ -12,14 +13,13 @@ class AroundTheWorld extends gamemode {
             this.status = "ended"
         }
     }
-    
+
 
     async handle_shot(player, answer) {
         if (player.score === answer.score) {
             player.score++
             console.log(`Bravo, le score de ${player.name} est maintenant de ${player.score}.\n`)
-        }
-        else
+        } else
             console.log(`C'est raté pour ${player.name} ! \n`)
     }
 
