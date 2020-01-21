@@ -1,0 +1,16 @@
+TP - Dart Master
+    CLI permettant de calculer les scores lors d'un jeu de flechette
+
+1 - Selection du nombre de joueur et selection du mode de jeu.
+    1 objets secteur :
+        Avec nombre de points par secteur
+        simple, double, triple pour les secteurs
+3 jeux:
+    Tour du monde : 
+        Le but est de toucher les parties de 1 à 20 dans l'ordre. 
+        Une fois la zone 1 touchée, la zone 2 se dévérouille. Le premier joueur à DEVEROUILLER le secteur 20 à gagné
+
+    301 :
+        Tous les joueurs commence avec 301 points
+tips : console.table()
+
