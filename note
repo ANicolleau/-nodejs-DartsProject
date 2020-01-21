@@ -14,3 +14,4 @@ TP - Dart Master
         Tous les joueurs commence avec 301 points
 tips : console.table()
 
+je veux ajouter mes gagnants dans un dictionnaire avec la clé qui correspond à la place remporté
