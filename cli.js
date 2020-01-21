@@ -67,7 +67,7 @@ async function GameSelection() {
     return game
 }
 
-async function playingThreeHundredAndOne(players) {
+async  function playingThreeHundredAndOne(players) {
     let win = false
     let three_hundred_and_one = new ThreeHundreadAndOne(1, "Tour du monde", 1, "Started")
     for (let player of players) {
