@@ -1,5 +1,5 @@
 node_modules/*
-.idea/*
+idea/*
 note
 package-lock.json
-.dist
+.dist/*

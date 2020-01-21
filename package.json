@@ -1,0 +1,24 @@
+{
+  "name": "tp_dart_master",
+  "version": "1.0.0",
+  "description": "**TP - Dart Master**",
+  "main": "cli.js",
+  "dependencies": {
+    "inquirer": "^7.0.2",
+    "commander": "^4.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antoinenicolleau/-nodejs-DartsProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antoinenicolleau/-nodejs-DartsProject/issues"
+  },
+  "homepage": "https://github.com/antoinenicolleau/-nodejs-DartsProject#readme"
+}
