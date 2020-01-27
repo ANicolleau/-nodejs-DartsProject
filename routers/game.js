@@ -37,7 +37,7 @@ router.get('/new', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    
+
 })
 
 router.get('/{id}', (req, res, next) => {
