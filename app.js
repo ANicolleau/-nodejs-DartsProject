@@ -2,7 +2,6 @@ const express = require('express')
 const mainRouter = require('./routes')
 const app = express()
 const PORT = process.env.PORT || 8080
-const db = require('./db')
 
 app.use(mainRouter, ()=>{
     console.log('ici')

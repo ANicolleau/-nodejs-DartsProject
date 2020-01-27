@@ -1,17 +1,18 @@
 const mongoose = require('mongoose')
 
-const url = 'mongodb://localhost:27017'
+mongoose.connect(
+    'mongodb://localhost:27017/darts', {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true
+    }
+).then(console.log('DB Connection Successfull'))
+    .catch((err) => {
+        console.error(err);
+    });
 
-mongoose.connect(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}, async (err, client) => {
-    if (err) {
-        await console.error('Une erreur est survenue : \n' + err)
-        return 'ERREUR'
-    }
-    else {
-        console.log('Database connected')
-    }
-})
+mongoose.connection.on('error', err => {
+    console.log(err);
+});
 module.exports = mongoose
