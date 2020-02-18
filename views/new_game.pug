@@ -1,0 +1,16 @@
+include header.pug
+
+
+h3 #{title}
+        form(action=`/games${method_override}`, method='post')
+            label Nom du joueur
+            input(name='name', rows='3', cols='30' value=game.name)
+            br
+            label Adresse mail
+            select(name="mode" id="mode")
+                option(value="") Veuillez choisir un mode de jeu
+                option(value="around-the-world") Tour du monde
+                option(value="301") 301
+                option(value="cricket") Cricket
+            br
+            input(type='submit')

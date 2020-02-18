@@ -1,0 +1,29 @@
+include header.pug
+
+body
+    h1 #{name}
+    table
+        thead
+            tr
+                td ID
+                td Mode
+                td Nom de la partie
+                td ID des joueurs
+                td Status de la partie
+                td Date de création
+        tbody
+            each game in games
+                tr
+                    td= game.gameId
+                    td= game.mode
+                    td= game.name
+                    td= game.currentPlayerId
+                    td= game.status
+                    td= game.createdAt
+                    td
+                        a(href='/games/' + game.gameId) Afficher
+                        a(href='/games/'+ game.gameId +'/edit') Modifier
+                        form(method='POST', action='/games/'+ game.gameId +'?_method=DELETE')
+                            button(type='submit') Supprimer
+
+    a(href='/players') Gérer les joueurs

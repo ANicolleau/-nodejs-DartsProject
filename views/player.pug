@@ -1,0 +1,21 @@
+include header.pug
+
+body
+    h1 #{name}
+    table
+        thead
+            tr
+                td ID
+                td Nom du joueur
+                td Adresse Mail
+                td Nombre de partie gagnée
+                td Nombre de partie perdue
+                td Date de création
+        tbody
+            tr
+                td= player.id
+                td= player.name
+                td= player.email
+                td= player.gameWin
+                td= player.gameLost
+                td= player.createdAt

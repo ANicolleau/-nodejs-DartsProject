@@ -1,7 +1,11 @@
 const express = require('express')
 const mainRouter = require('./routes')
 const app = express()
+const methodOverride = require('method-override')
 const PORT = process.env.PORT || 8080
+
+app.use(methodOverride('_method'))
+app.use(express.urlencoded({extended: true}));
 
 app.use(mainRouter, ()=>{
     console.log('ici')

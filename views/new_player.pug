@@ -1,0 +1,12 @@
+include header.pug
+
+
+h3 #{title}
+        form(action=`/players${method_override}`, method='post')
+            label Nom du joueur
+            input(name='name', rows='3', cols='30' value=player.name)
+            br
+            label Adresse mail
+            input(name='email', rows='3', cols='30' value=player.email)
+            br
+            input(type='submit')

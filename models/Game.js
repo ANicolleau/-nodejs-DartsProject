@@ -5,9 +5,6 @@ const db = require('../db')
 
 
 const schema = new mongoose.Schema({
-    _id: {
-        type: Schema.Types.Mixed
-    },
     gameId: {
         type: Schema.Types.Mixed
     },
@@ -26,7 +23,7 @@ const schema = new mongoose.Schema({
         enum: ['draft', 'started', 'ended']
     },
     createdAt: {
-        type: Date
+        type: Date, default: new Date()
     },
 })
 
@@ -34,8 +31,13 @@ const schema = new mongoose.Schema({
 const game = mongoose.model('Game', schema)
 
 module.exports = {
-    get: (gameId) => {
-        return game.findOne({id: gameId})
+    get: async (gameId) => {
+        gameId = +gameId
+        return game.findOne({gameId: gameId})
+    },
+    getPlayers: async (gameId) => {
+        gameId = +gameId
+        return game.find
     },
     count: () => {
         return game.estimatedDocumentCount()
@@ -52,7 +54,7 @@ module.exports = {
     insert: async (params) => {
         let gameId = await game.estimatedDocumentCount()
         let add_game = new game({
-            id: gameId,
+            gameId: gameId,
             mode: params.mode,
             name: params.name,
             currentPlayerId: params.currentPlayerId,
@@ -63,22 +65,11 @@ module.exports = {
     },
 
     update: async (gameId, params) => {
-        let update_user = await user.findOne({id: gameId})
-
-        if (params.mode)
-            update_user.mode = params.mode
-        if (params.name)
-            update_user.name = params.name
-        if (params.currentPlayerId)
-            update_user.currentPlayerId = params.currentPlayerId
-        if (params.status)
-            update_user.status = params.status
-
-        return await update_user.save()
+        return await game.updateOne({gameId}, params)
     },
 
     remove: async (gameId) => {
-        return await game.deleteOne({id: gameId})
+        return await game.deleteOne({gameId: gameId})
     }
 
 }
