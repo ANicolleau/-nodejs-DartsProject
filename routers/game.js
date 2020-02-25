@@ -39,8 +39,9 @@ router.get('/new', (req, res, next) => {
     res.format({
         html: () => {
             const game = {}
+            const method_override = ``
             const title = "Créer une partie"
-            res.render('new_game.pug', {game, title})
+            res.render('new_game.pug', {game, title, method_override})
         },
         json: () => {
             res.send({
@@ -50,8 +51,8 @@ router.get('/new', (req, res, next) => {
     })
 })
 
-router.patch('/', async (req, res) => {
-    console.log("Création d'un nouveau joueur")
+router.post('/', async (req, res) => {
+    console.log("Création d'une nouvelle game")
     await game.insert(req.body)
         .then((game_created) => {
             res.format({
@@ -92,7 +93,7 @@ router.get('/:id/edit', (req, res, next) => {
     console.log('ON EST LA')
 })
 
-router.put('/:id', async (req, res, next) => {
+router.patch('/:id', async (req, res, next) => {
     let id = req.params.id
     id = +id
     await game.update(id, req.body)

@@ -34,7 +34,7 @@ router.get('/', (req, res, next) => {
     }).catch(next)
 })
 
-router.patch('/', async (req, res) => {
+router.post('/', async (req, res) => {
     console.log(req.body)
     await player.insert(req.body)
         .then((results) => {
@@ -55,8 +55,9 @@ router.get('/new', (req, res) => {
     res.format({
         html: () => {
             const player = {}
+            const method_override = ``
             const title = "Ajouter un utilisateur"
-            res.render('new_player.pug', {player, title})
+            res.render('new_player.pug', {player, title, method_override})
         },
         json: () => {
             res.send({
